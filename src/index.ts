@@ -62,13 +62,20 @@ async function main(): Promise<void> {
     )
   }
 
-  // ── 5. Create MCP server ──────────────────────────
+  // ── 5. Fetch developer API key ────────────────────
+  process.stderr.write("[fortem-mcp] Fetching developer API key...\n")
+  const { apiKey: developerApiKey } = await client.get<{ apiKey: string }>(
+    "/api/v1/users/settings/developers/api-key"
+  )
+  process.stderr.write("[fortem-mcp] Developer API key ready\n")
+
+  // ── 6. Create MCP server ──────────────────────────
   const server = new McpServer({
     name: "fortem-mcp",
     version: "0.1.0",
   })
 
-  // ── 6. Register tools ─────────────────────────────
+  // ── 7. Register tools ─────────────────────────────
   // [Personal] tools — manage your own collections, items, kiosk, and listings
   registerCollectionTools(server, client, signer)
   registerItemTools(server, client, signer)
@@ -76,11 +83,11 @@ async function main(): Promise<void> {
   registerMarketTools(server, client, signer)
 
   // [Developer] tools — integrate Fortem into games and apps
-  registerDeveloperTools(server, client)
+  registerDeveloperTools(server, client, developerApiKey)
 
-  process.stderr.write("[fortem-mcp] Tools registered: [Personal] create_collection, get_my_collections, get_collection_detail, upload_image, mint_item, get_my_items, get_item_detail, ensure_kiosk, list_item | [Developer] get_developer_guide, verify_member, get_my_profile\n")
+  process.stderr.write("[fortem-mcp] Tools registered: [Personal] create_collection, get_my_collections, get_collection_detail, upload_image, mint_item, get_my_items, get_item_detail, ensure_kiosk, list_item | [Developer] get_developer_guide, get_my_api_key, verify_member, get_my_profile\n")
 
-  // ── 7. Start server ───────────────────────────────
+  // ── 8. Start server ───────────────────────────────
   const transport = new StdioServerTransport()
   await server.connect(transport)
   process.stderr.write("[fortem-mcp] Server started (stdio transport)\n")

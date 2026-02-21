@@ -16,8 +16,15 @@ interface UserProfile {
   createdAt: string
 }
 
-const GUIDE_ALL = `
+interface ApiKeyResponse {
+  apiKey: string
+}
+
+function buildGuideAll(apiKey: string): string {
+  return `
 # Fortem Developer Integration Guide
+
+Your API key: \`${apiKey}\`
 
 Fortem provides three integration paths depending on your use case:
 
@@ -28,8 +35,7 @@ Fortem provides three integration paths depending on your use case:
 Best for: custom backends, server-side integrations, non-game contexts.
 
 **Getting started:**
-1. Sign in at https://fortem.gg and go to **Developer Settings** to generate an API key.
-2. Call the REST API directly with your API key in the Authorization header.
+Use your API key in the Authorization header for every request.
 
 **Base URLs:**
 - Testnet: https://testnet-api.fortem.gg
@@ -53,24 +59,13 @@ Best for: browser-based games, HTML5 games, web apps.
 **Installation:**
 \`\`\`bash
 npm install @fortemlabs/sdk-js
-# or
-yarn add @fortemlabs/sdk-js
 \`\`\`
 
 **Quick start:**
 \`\`\`typescript
 import { createFortemClient } from "@fortemlabs/sdk-js"
 
-const fortem = createFortemClient({ apiKey: "your-api-key" })
-
-// Verify a player
-const user = await fortem.users.getByWallet("0x...")
-
-// List your collections
-const collections = await fortem.collections.list()
-
-// Mint an item
-await fortem.items.create({ collectionId: 1, name: "Sword", quantity: 1, redeemCode: "SWORD01" })
+const fortem = createFortemClient({ apiKey: "${apiKey}" })
 \`\`\`
 
 **Rate limits:** 100 collection requests/day · 1,000 item requests/day
@@ -84,13 +79,11 @@ await fortem.items.create({ collectionId: 1, name: "Sword", quantity: 1, redeemC
 Best for: Unity games (minimum Unity 2021.2).
 
 **Installation via Unity Package Manager:**
-1. Open **Window → Package Manager**
-2. Click **+** → **Add package from git URL**
-3. Enter:
 \`\`\`
 https://github.com/ForTemLabs/fortem-sdk-unity.git?path=Packages/com.fortem.fortem-sdk
 \`\`\`
-   To pin a specific version append a tag, e.g. \`#1.0.0\`
+
+Use API key: \`${apiKey}\`
 
 **GitHub:** https://github.com/ForTemLabs/fortem-sdk-unity
 **Docs:** https://docs.fortem.gg
@@ -99,17 +92,20 @@ https://github.com/ForTemLabs/fortem-sdk-unity.git?path=Packages/com.fortem.fort
 
 Use \`get_developer_guide\` with option "1", "2", or "3" to see a focused guide for each path.
 `.trim()
+}
 
-const GUIDE_1 = `
+function buildGuide1(apiKey: string): string {
+  return `
 # Option 1 — Direct Developer API
 
 Best for: custom backends, server-side integrations, non-game contexts.
 
-## Getting started
+## Authentication
 
-1. Sign in at https://fortem.gg and go to **Developer Settings** to generate an API key.
-2. Include the key in every request:
-   \`Authorization: Bearer <your-api-key>\`
+Include your API key in every request:
+\`\`\`
+Authorization: Bearer ${apiKey}
+\`\`\`
 
 ## Base URLs
 
@@ -156,8 +152,10 @@ POST /api/v1/items/list/execute
 
 https://docs.fortem.gg
 `.trim()
+}
 
-const GUIDE_2 = `
+function buildGuide2(apiKey: string): string {
+  return `
 # Option 2 — JS SDK (HTML / Web Games)
 
 Best for: browser-based games, HTML5 games, web apps.
@@ -173,12 +171,10 @@ pnpm add @fortemlabs/sdk-js
 
 ## Authentication
 
-Get an API key from **https://fortem.gg → Developer Settings**.
-
 \`\`\`typescript
 import { createFortemClient } from "@fortemlabs/sdk-js"
 
-const fortem = createFortemClient({ apiKey: "your-api-key" })
+const fortem = createFortemClient({ apiKey: "${apiKey}" })
 \`\`\`
 
 The client automatically caches the token (5-minute TTL) and refreshes it as needed.
@@ -235,8 +231,10 @@ try {
 
 https://github.com/ForTemLabs/sdk-js
 `.trim()
+}
 
-const GUIDE_3 = `
+function buildGuide3(apiKey: string): string {
+  return `
 # Option 3 — Unity SDK
 
 Best for: Unity games (minimum Unity 2021.2).
@@ -258,15 +256,15 @@ To pin a specific version, append a version tag:
 https://github.com/ForTemLabs/fortem-sdk-unity.git?path=Packages/com.fortem.fortem-sdk#1.0.0
 \`\`\`
 
-## Getting started
+## Your API Key
 
-After installation, find the full getting started guide inside the package's **Documentation** folder,
-or visit https://docs.fortem.gg.
+\`\`\`
+${apiKey}
+\`\`\`
 
 ## Requirements
 
 - Unity 2021.2 or later
-- A Fortem API key (get one at https://fortem.gg → Developer Settings)
 
 ## GitHub
 
@@ -276,27 +274,85 @@ https://github.com/ForTemLabs/fortem-sdk-unity
 
 https://docs.fortem.gg
 `.trim()
+}
 
-const GUIDES: Record<string, string> = { "1": GUIDE_1, "2": GUIDE_2, "3": GUIDE_3 }
-
-export function registerDeveloperTools(server: McpServer, client: FortemClient): void {
+export function registerDeveloperTools(
+  server: McpServer,
+  client: FortemClient,
+  developerApiKey: string
+): void {
   // ──────────────────────────────────────────────
   // get_developer_guide
   // ──────────────────────────────────────────────
   server.tool(
     "get_developer_guide",
-    "[Developer] Get a guide for integrating Fortem into your game or app — for monetization, NFT rewards, and item management. Choose from three integration paths: Direct API, JS SDK (HTML/web games), or Unity SDK.",
+    "[Developer] Get a guide for integrating Fortem into your game or app — for monetization, NFT rewards, and item management. Includes your actual API key in code examples. Choose from three integration paths: Direct API, JS SDK (HTML/web games), or Unity SDK.",
     {
       option: z
         .enum(["1", "2", "3"])
         .optional()
         .describe(
-          "Integration option to focus on: 1=Direct Developer API, 2=JS SDK for HTML/web games, 3=Unity SDK. Omit to see an overview of all options."
+          "Integration option: 1=Direct Developer API, 2=JS SDK for HTML/web games, 3=Unity SDK. Omit to see an overview of all options."
         ),
     },
     async ({ option }) => {
-      const guide = option ? GUIDES[option] : GUIDE_ALL
+      const guide =
+        option === "1" ? buildGuide1(developerApiKey) :
+        option === "2" ? buildGuide2(developerApiKey) :
+        option === "3" ? buildGuide3(developerApiKey) :
+        buildGuideAll(developerApiKey)
+
       return { content: [{ type: "text", text: guide }] }
+    }
+  )
+
+  // ──────────────────────────────────────────────
+  // get_my_api_key
+  // ──────────────────────────────────────────────
+  server.tool(
+    "get_my_api_key",
+    "[Developer] Get your Fortem Developer API key. Use this key to authenticate requests from the JS SDK, Unity SDK, or direct REST API calls. Pass regenerate=true to issue a new key (the old key will be invalidated).",
+    {
+      regenerate: z
+        .boolean()
+        .optional()
+        .default(false)
+        .describe("Set to true to generate a new API key (invalidates the current one)"),
+    },
+    async ({ regenerate }) => {
+      let apiKey: string
+
+      if (regenerate) {
+        const result = await client.put<ApiKeyResponse>(
+          "/api/v1/users/settings/developers/api-key",
+          {}
+        )
+        apiKey = result.apiKey
+      } else {
+        const result = await client.get<ApiKeyResponse>(
+          "/api/v1/users/settings/developers/api-key"
+        )
+        apiKey = result.apiKey
+      }
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(
+              {
+                apiKey,
+                regenerated: regenerate ?? false,
+                note: regenerate
+                  ? "A new API key has been issued. Update your SDK configuration with this key."
+                  : "Use this key in createFortemClient({ apiKey }) or as Authorization: Bearer <key>.",
+              },
+              null,
+              2
+            ),
+          },
+        ],
+      }
     }
   )
 
@@ -357,4 +413,5 @@ export function registerDeveloperTools(server: McpServer, client: FortemClient):
       }
     }
   )
+
 }

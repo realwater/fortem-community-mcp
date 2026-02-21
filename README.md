@@ -86,7 +86,8 @@ Use these tools when building a game or app that uses Fortem for monetization, N
 
 | Tool | What it does |
 |------|-------------|
-| `get_developer_guide` | Get an integration guide (Direct API / JS SDK / Unity SDK) |
+| `get_developer_guide` | Get an integration guide with your actual API key (Direct API / JS SDK / Unity SDK) |
+| `get_my_api_key` | View your Developer API key, or regenerate it (`regenerate: true`) |
 | `verify_member` | Check if a wallet address is a registered Fortem member |
 | `get_my_profile` | Get your Fortem account profile |
 
@@ -191,5 +192,5 @@ src/
     ├── item.ts        — [Personal] upload_image, mint_item, get_my_items, get_item_detail
     ├── kiosk.ts       — [Personal] ensure_kiosk
     ├── market.ts      — [Personal] list_item
-    └── developer.ts   — [Developer] get_developer_guide, verify_member, get_my_profile
+    └── developer.ts   — [Developer] get_developer_guide, get_my_api_key, verify_member, get_my_profile
 ```
