@@ -119,3 +119,24 @@ main().catch((err) => {
   process.stderr.write(`[fortem-mcp] Fatal error: ${(err as Error).message}\n`)
   process.exit(1)
 })
+
+// ── Smithery sandbox export ───────────────────────
+// Used by Smithery to scan tools without real credentials
+export function createSandboxServer() {
+  const server = new McpServer({ name: "fortem-mcp", version: "0.1.1" })
+
+  const stubClient = new FortemClient("", async () => {}, undefined)
+  const stubSigner: Signer = {
+    getAddress: () => "0x0000000000000000000000000000000000000000",
+    signTransaction: async () => "",
+    signPersonalMessage: async () => ({ bytes: "", signature: "" }),
+  }
+
+  registerCollectionTools(server, stubClient, stubSigner)
+  registerItemTools(server, stubClient, stubSigner)
+  registerKioskTools(server, stubClient, stubSigner)
+  registerMarketTools(server, stubClient, stubSigner)
+  registerDeveloperTools(server, stubClient, async () => "YOUR_API_KEY")
+
+  return server
+}
