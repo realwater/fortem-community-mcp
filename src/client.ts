@@ -5,7 +5,8 @@ export class FortemClient {
 
   constructor(
     private readonly apiUrl: string,
-    private readonly onUnauthorized: () => Promise<void>
+    private readonly onUnauthorized: () => Promise<void>,
+    private readonly onBeforeRequest?: () => Promise<void>
   ) {}
 
   setToken(token: string): void {
@@ -45,6 +46,8 @@ export class FortemClient {
     retry = true,
     isMultipart = false
   ): Promise<T> {
+    if (retry) await this.onBeforeRequest?.()
+
     const headers: Record<string, string> = {}
 
     if (!isMultipart) {

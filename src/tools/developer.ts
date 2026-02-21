@@ -279,7 +279,7 @@ https://docs.fortem.gg
 export function registerDeveloperTools(
   server: McpServer,
   client: FortemClient,
-  developerApiKey: string
+  getDeveloperApiKey: () => Promise<string>
 ): void {
   // ──────────────────────────────────────────────
   // get_developer_guide
@@ -296,11 +296,12 @@ export function registerDeveloperTools(
         ),
     },
     async ({ option }) => {
+      const apiKey = await getDeveloperApiKey()
       const guide =
-        option === "1" ? buildGuide1(developerApiKey) :
-        option === "2" ? buildGuide2(developerApiKey) :
-        option === "3" ? buildGuide3(developerApiKey) :
-        buildGuideAll(developerApiKey)
+        option === "1" ? buildGuide1(apiKey) :
+        option === "2" ? buildGuide2(apiKey) :
+        option === "3" ? buildGuide3(apiKey) :
+        buildGuideAll(apiKey)
 
       return { content: [{ type: "text", text: guide }] }
     }
