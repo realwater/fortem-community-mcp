@@ -1,6 +1,8 @@
-# fortem-mcp
+# fortem-community-mcp
 
-An MCP (Model Context Protocol) server for the [Fortem](https://fortem.gg) NFT marketplace.
+A community MCP (Model Context Protocol) server for the [Fortem](https://fortem.gg) NFT marketplace.
+
+> ⚠️ This is an unofficial community project, not affiliated with FortemLabs.
 
 Connect Claude to Fortem and control your NFTs with natural language — create collections, mint items, manage your kiosk, and list items for sale. Also includes developer tools for integrating Fortem into your game or app.
 
@@ -8,16 +10,7 @@ Connect Claude to Fortem and control your NFTs with natural language — create 
 
 ## Quick Start
 
-### Step 1 — Clone and build
-
-```bash
-git clone https://github.com/ForTemLabs/fortem-mcp.git
-cd fortem-mcp
-npm install
-npm run build
-```
-
-### Step 2 — Get your Sui private key
+### Step 1 — Get your Sui private key
 
 You need a Sui wallet private key to authenticate. Export it from your wallet app:
 
@@ -28,22 +21,22 @@ The key starts with `suiprivkey1...`
 
 > ⚠️ Keep this key safe. Anyone who has it can control your wallet.
 
-### Step 3 — Connect to Claude
+### Step 2 — Connect to Claude
 
 **Claude Code (terminal):**
 ```bash
-claude mcp add fortem \
+claude mcp add fortem-community \
   -e SUI_PRIVATE_KEY=suiprivkey1... \
-  -- node /absolute/path/to/fortem-mcp/dist/index.js
+  -- npx fortem-community-mcp
 ```
 
 **Claude Desktop** — edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "fortem": {
-      "command": "node",
-      "args": ["/absolute/path/to/fortem-mcp/dist/index.js"],
+    "fortem-community": {
+      "command": "npx",
+      "args": ["fortem-community-mcp"],
       "env": {
         "SUI_PRIVATE_KEY": "suiprivkey1..."
       }
@@ -53,7 +46,7 @@ claude mcp add fortem \
 ```
 Restart Claude Desktop after saving.
 
-### Step 4 — Start using it
+### Step 3 — Start using it
 
 Open Claude and try:
 ```
@@ -139,15 +132,15 @@ What account is this MCP server authenticated as?
 
 ```bash
 # Testnet (default)
-claude mcp add fortem \
+claude mcp add fortem-community \
   -e SUI_PRIVATE_KEY=suiprivkey1... \
-  -- node /path/to/fortem-mcp/dist/index.js
+  -- npx fortem-community-mcp
 
 # Mainnet
-claude mcp add fortem \
+claude mcp add fortem-community \
   -e FORTEM_NETWORK=mainnet \
   -e SUI_PRIVATE_KEY=suiprivkey1... \
-  -- node /path/to/fortem-mcp/dist/index.js
+  -- npx fortem-community-mcp
 ```
 
 ---
@@ -171,7 +164,7 @@ Use MCP Inspector to call tools interactively in your browser:
 ```bash
 npx @modelcontextprotocol/inspector \
   -e SUI_PRIVATE_KEY=suiprivkey1... \
-  node /path/to/fortem-mcp/dist/index.js
+  npx fortem-community-mcp
 ```
 
 Open `http://localhost:5173`.
