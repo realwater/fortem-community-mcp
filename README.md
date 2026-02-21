@@ -161,10 +161,6 @@ On startup, the server automatically:
 
 > **Note:** Your Fortem account must be created at [fortem.gg](https://fortem.gg) before using the MCP server.
 
-### Google Login (Coming Soon)
-
-Google ZK Login support is planned for a future release. For now, please use a Sui private key.
-
 ---
 
 ## Development / Debugging
@@ -178,15 +174,6 @@ npx @modelcontextprotocol/inspector \
 ```
 
 Open `http://localhost:5173`.
-
----
-
-## Networks
-
-| Network | API Endpoint |
-|---------|-------------|
-| testnet | `https://testnet-api.fortem.gg` |
-| mainnet | `https://api.fortem.gg` |
 
 ---
 
