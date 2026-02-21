@@ -2,7 +2,7 @@
 
 An MCP (Model Context Protocol) server for the [Fortem](https://fortem.gg) NFT marketplace.
 
-Connect Claude to Fortem and control your NFTs with natural language — create collections, mint items, manage your kiosk, and list items for sale.
+Connect Claude to Fortem and control your NFTs with natural language — create collections, mint items, manage your kiosk, and list items for sale. Also includes developer tools for integrating Fortem into your game or app.
 
 ---
 
@@ -64,6 +64,10 @@ Show my Fortem collections
 
 ## Available Tools
 
+### Personal — Manage your own NFTs
+
+These tools act on your own account (wallet address tied to `SUI_PRIVATE_KEY`).
+
 | Tool | What it does |
 |------|-------------|
 | `create_collection` | Create a new NFT collection |
@@ -76,10 +80,21 @@ Show my Fortem collections
 | `get_my_items` | View your NFT inventory |
 | `get_item_detail` | View details of a specific item |
 
+### Developer — Integrate Fortem into your game or app
+
+Use these tools when building a game or app that uses Fortem for monetization, NFT rewards, or item management.
+
+| Tool | What it does |
+|------|-------------|
+| `get_developer_guide` | Get an integration guide (Direct API / JS SDK / Unity SDK) |
+| `verify_member` | Check if a wallet address is a registered Fortem member |
+| `get_my_profile` | Get your Fortem account profile |
+
 ---
 
 ## Example Prompts
 
+**Personal use:**
 ```
 Show me my Fortem collections
 
@@ -92,6 +107,19 @@ Check if I have a kiosk, create one if I don't
 List item #42 for 10 USDC
 
 Show my items with status MINTED
+```
+
+**Developer / game integration:**
+```
+Show me the Fortem developer integration guide
+
+I want to build an HTML5 game with Fortem — which SDK should I use?
+
+Show me how to integrate Fortem into my Unity game
+
+Is wallet 0xabc... a registered Fortem member?
+
+What account is this MCP server authenticated as?
 ```
 
 ---
@@ -172,8 +200,9 @@ src/
 ├── signer.ts       — Transaction signing abstraction
 ├── types.ts        — Shared types and network config
 └── tools/
-    ├── collection.ts — create_collection, get_my_collections, get_collection_detail
-    ├── item.ts       — upload_image, mint_item, get_my_items, get_item_detail
-    ├── kiosk.ts      — ensure_kiosk
-    └── market.ts     — list_item
+    ├── collection.ts  — [Personal] create_collection, get_my_collections, get_collection_detail
+    ├── item.ts        — [Personal] upload_image, mint_item, get_my_items, get_item_detail
+    ├── kiosk.ts       — [Personal] ensure_kiosk
+    ├── market.ts      — [Personal] list_item
+    └── developer.ts   — [Developer] get_developer_guide, verify_member, get_my_profile
 ```

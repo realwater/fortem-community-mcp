@@ -27,7 +27,7 @@ export function registerMarketTools(
   // ──────────────────────────────────────────────
   server.tool(
     "list_item",
-    "Lists an NFT item for sale in your kiosk. Run ensure_kiosk first if you don't have a kiosk yet.",
+    "[Personal] Lists one of your NFT items for sale in your kiosk. Run ensure_kiosk first if you don't have a kiosk yet.",
     {
       itemId: z.number().int().positive().describe("ID of the item to list for sale"),
       sellingPrice: z

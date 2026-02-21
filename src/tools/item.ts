@@ -92,7 +92,7 @@ export function registerItemTools(
   // ──────────────────────────────────────────────
   server.tool(
     "upload_image",
-    "Uploads a local image file to Fortem. Item images are stored on IPFS; collection images are stored on S3.",
+    "[Personal] Uploads a local image file to Fortem. Item images are stored on IPFS; collection images are stored on S3.",
     {
       filePath: z.string().describe("Absolute path to the local file to upload (e.g. /Users/me/image.png)"),
       type: z
@@ -164,7 +164,7 @@ export function registerItemTools(
   // ──────────────────────────────────────────────
   server.tool(
     "mint_item",
-    "Mints an NFT item into a collection. Automatically signs and executes the blockchain transaction.",
+    "[Personal] Mints an NFT item into your collection. Automatically signs and executes the blockchain transaction.",
     {
       collectionId: z.number().int().positive().describe("Collection ID to add the item to"),
       name: z.string().max(40).describe("Item name (max 40 characters)"),
@@ -227,7 +227,7 @@ export function registerItemTools(
   // ──────────────────────────────────────────────
   server.tool(
     "get_my_items",
-    "Retrieves your NFT item inventory. Automatically filters to only your items based on the JWT token.",
+    "[Personal] Retrieves your own NFT item inventory. Automatically filters to only your items based on the JWT token.",
     {
       status: z
         .enum(["PROCESSING", "MINTED", "REDEEMED", "OFFER_PENDING", "KIOSK_LISTED"])
@@ -267,7 +267,7 @@ export function registerItemTools(
   // ──────────────────────────────────────────────
   server.tool(
     "get_item_detail",
-    "Retrieves detailed information for a specific NFT item, including price, attributes, and on-chain objectId.",
+    "[Personal] Retrieves detailed information for a specific NFT item, including price, attributes, and on-chain objectId.",
     {
       itemId: z.number().int().positive().describe("Item ID"),
     },

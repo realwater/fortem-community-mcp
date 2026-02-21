@@ -11,6 +11,7 @@ import { registerCollectionTools } from "./tools/collection.js"
 import { registerItemTools } from "./tools/item.js"
 import { registerKioskTools } from "./tools/kiosk.js"
 import { registerMarketTools } from "./tools/market.js"
+import { registerDeveloperTools } from "./tools/developer.js"
 
 async function main(): Promise<void> {
   // ── 1. Network configuration ─────────────────────
@@ -68,12 +69,16 @@ async function main(): Promise<void> {
   })
 
   // ── 6. Register tools ─────────────────────────────
+  // [Personal] tools — manage your own collections, items, kiosk, and listings
   registerCollectionTools(server, client, signer)
   registerItemTools(server, client, signer)
   registerKioskTools(server, client, signer)
   registerMarketTools(server, client, signer)
 
-  process.stderr.write("[fortem-mcp] Tools registered: create_collection, get_my_collections, get_collection_detail, upload_image, mint_item, get_my_items, get_item_detail, ensure_kiosk, list_item\n")
+  // [Developer] tools — integrate Fortem into games and apps
+  registerDeveloperTools(server, client)
+
+  process.stderr.write("[fortem-mcp] Tools registered: [Personal] create_collection, get_my_collections, get_collection_detail, upload_image, mint_item, get_my_items, get_item_detail, ensure_kiosk, list_item | [Developer] get_developer_guide, verify_member, get_my_profile\n")
 
   // ── 7. Start server ───────────────────────────────
   const transport = new StdioServerTransport()

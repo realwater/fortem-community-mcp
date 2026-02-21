@@ -53,7 +53,7 @@ export function registerCollectionTools(
   // ──────────────────────────────────────────────
   server.tool(
     "create_collection",
-    "Creates a new NFT collection. Automatically signs and executes the blockchain transaction.",
+    "[Personal] Creates a new NFT collection under your own account. Automatically signs and executes the blockchain transaction.",
     {
       name: z.string().max(40).describe("Collection name (max 40 characters)"),
       description: z.string().max(1000).describe("Collection description (max 1000 characters)"),
@@ -114,7 +114,7 @@ export function registerCollectionTools(
   // ──────────────────────────────────────────────
   server.tool(
     "get_my_collections",
-    "Retrieves your NFT collection list. Automatically filters to only your collections based on the JWT token.",
+    "[Personal] Retrieves your own NFT collection list. Automatically filters to only your collections based on the JWT token.",
     {
       query: z.string().optional().describe("Search query for collection name"),
       skip: z.number().int().min(0).optional().default(0).describe("Pagination offset"),
@@ -144,7 +144,7 @@ export function registerCollectionTools(
   // ──────────────────────────────────────────────
   server.tool(
     "get_collection_detail",
-    "Retrieves detailed information for a specific collection.",
+    "[Personal] Retrieves detailed information for a specific collection.",
     {
       collectionId: z.number().int().positive().describe("Collection ID"),
     },

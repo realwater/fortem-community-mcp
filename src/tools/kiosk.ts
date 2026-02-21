@@ -23,7 +23,7 @@ export function registerKioskTools(
   // ──────────────────────────────────────────────
   server.tool(
     "ensure_kiosk",
-    "Creates a kiosk if one does not exist. Skips creation if it already exists (idempotent). A kiosk is required to list items for sale.",
+    "[Personal] Creates a kiosk for your account if one does not exist. Skips creation if it already exists (idempotent). A kiosk is required to list items for sale.",
     {},
     async () => {
       // 1. Check if kiosk exists
