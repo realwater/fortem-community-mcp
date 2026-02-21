@@ -1,0 +1,29 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    required:
+      - suiPrivateKey
+    properties:
+      suiPrivateKey:
+        type: string
+        description: "Sui wallet private key (starts with suiprivkey1...)"
+      fortemNetwork:
+        type: string
+        description: "Network: testnet or mainnet"
+        default: "testnet"
+        enum:
+          - testnet
+          - mainnet
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "fortem-community-mcp"],
+      env: {
+        SUI_PRIVATE_KEY: config.suiPrivateKey,
+        FORTEM_NETWORK: config.fortemNetwork || "testnet"
+      }
+    })
+  exampleConfig:
+    suiPrivateKey: "suiprivkey1..."
+    fortemNetwork: "testnet"
