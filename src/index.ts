@@ -123,7 +123,7 @@ main().catch((err) => {
 // ── Smithery sandbox export ───────────────────────
 // Used by Smithery to scan tools without real credentials
 export function createSandboxServer() {
-  const server = new McpServer({ name: "fortem-mcp", version: "0.1.1" })
+  const server = new McpServer({ name: "fortem-mcp", version: "0.1.2" })
 
   const stubClient = new FortemClient("", async () => {}, undefined)
   const stubSigner: Signer = {
