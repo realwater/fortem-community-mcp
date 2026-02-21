@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { FortemClient } from "./client.js"
@@ -55,10 +56,9 @@ async function main(): Promise<void> {
     process.stderr.write("[fortem-mcp] Login successful (Ed25519)\n")
   } else {
     throw new Error(
-      "Authentication required.\n\n" +
-      "  Set SUI_PRIVATE_KEY=suiprivkey1... to authenticate with an Ed25519 wallet.\n\n" +
-      "  Google ZK Login support is coming soon.\n" +
-      "  In the meantime, please use a Sui private key to authenticate."
+      "SUI_PRIVATE_KEY is required.\n\n" +
+      "  Set SUI_PRIVATE_KEY=suiprivkey1... to authenticate.\n\n" +
+      "  Export your private key from Sui Wallet → Settings → Accounts → Export Private Key."
     )
   }
 

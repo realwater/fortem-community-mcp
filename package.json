@@ -1,13 +1,33 @@
 {
-  "name": "fortem-mcp",
+  "name": "fortem-community-mcp",
   "version": "0.1.0",
-  "description": "Fortem NFT Marketplace MCP Server",
+  "description": "Community MCP server for Fortem NFT Marketplace — Claude Code integration",
   "type": "module",
   "main": "dist/index.js",
+  "bin": {
+    "fortem-community-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "tsc --watch"
+  },
+  "keywords": [
+    "mcp",
+    "fortem",
+    "nft",
+    "sui",
+    "claude",
+    "claude-code",
+    "model-context-protocol"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realwater/fortem-mcp-experiment.git"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
