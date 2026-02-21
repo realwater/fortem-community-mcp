@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Smithery build cache
+.smithery/
+
 # Build output
 dist/
 
